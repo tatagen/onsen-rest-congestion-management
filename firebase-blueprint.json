@@ -1,0 +1,60 @@
+{
+  "entities": {
+    "Cushion": {
+      "title": "Cushion",
+      "description": "Represents a physical resting cushion on the tatami rest area map",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string" },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "groupId": { "type": "string" },
+        "customerId": { "type": "string" }
+      },
+      "required": ["id", "label", "x", "y"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Represents a waiting or active customer group/ticket",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ticketNumber": { "type": "string" },
+        "seq": { "type": "number" },
+        "groupSize": { "type": "number" },
+        "status": { "type": "string", "enum": ["waiting", "called", "moving", "seated", "completed"] },
+        "seatedTime": { "type": "string" },
+        "exitTimePlanned": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "ticketNumber", "seq", "groupSize", "status", "createdAt"]
+    },
+    "SystemConfig": {
+      "title": "SystemConfig",
+      "description": "Global operational state and settings of the rest area",
+      "type": "object",
+      "properties": {
+        "capacity": { "type": "number" },
+        "callingStopped": { "type": "boolean" },
+        "lastResetDate": { "type": "string" },
+        "nextSeq": { "type": "number" }
+      },
+      "required": ["capacity", "callingStopped", "lastResetDate", "nextSeq"]
+    }
+  },
+  "firestore": {
+    "cushions/{cushionId}": {
+      "schema": "Cushion",
+      "description": "Interactive tatami cushion entities on the map"
+    },
+    "customers/{customerId}": {
+      "schema": "Customer",
+      "description": "Active and historical database of customer tickets"
+    },
+    "config/global": {
+      "schema": "SystemConfig",
+      "description": "Global system configuration document"
+    }
+  }
+}

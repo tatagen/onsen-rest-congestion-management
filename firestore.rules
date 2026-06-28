@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net (First Rule Match)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions for validating inputs and formats
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Cushion entity validation
+    function isValidCushion(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.label is string && data.label.size() <= 10
+        && data.x is number && data.x >= 0 && data.x <= 100
+        && data.y is number && data.y >= 0 && data.y <= 100
+        && (!('groupId' in data) || data.groupId == null || (data.groupId is string && data.groupId.size() <= 128))
+        && (!('customerId' in data) || data.customerId == null || (data.customerId is string && data.customerId.size() <= 128));
+    }
+
+    // Customer entity validation
+    function isValidCustomer(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.ticketNumber is string && data.ticketNumber.size() <= 10
+        && data.seq is int
+        && data.groupSize is int && data.groupSize >= 1 && data.groupSize <= 100
+        && data.status is string && (data.status == 'waiting' || data.status == 'called' || data.status == 'moving' || data.status == 'seated' || data.status == 'completed')
+        && (!('seatedTime' in data) || data.seatedTime == null || (data.seatedTime is string && data.seatedTime.size() <= 20))
+        && (!('exitTimePlanned' in data) || data.exitTimePlanned == null || (data.exitTimePlanned is string && data.exitTimePlanned.size() <= 20))
+        && data.createdAt is int;
+    }
+
+    // System configuration document validation
+    function isValidConfig(data) {
+      return data.capacity is int && data.capacity >= 1 && data.capacity <= 200
+        && data.callingStopped is bool
+        && data.lastResetDate is string && data.lastResetDate.size() <= 20
+        && data.nextSeq is int;
+    }
+
+    // Collection matches
+    match /cushions/{cushionId} {
+      allow read: if true;
+      allow create: if isValidId(cushionId) && isValidCushion(incoming())
+        && incoming().keys().hasAll(['id', 'label', 'x', 'y'])
+        && incoming().keys().size() <= 6;
+      allow update: if isValidId(cushionId) && isValidCushion(incoming())
+        && incoming().keys().size() <= 6;
+      allow delete: if isValidId(cushionId);
+    }
+
+    match /customers/{customerId} {
+      allow read: if true;
+      allow create: if isValidId(customerId) && isValidCustomer(incoming())
+        && incoming().keys().hasAll(['id', 'ticketNumber', 'seq', 'groupSize', 'status', 'createdAt'])
+        && incoming().keys().size() <= 8;
+      allow update: if isValidId(customerId) && isValidCustomer(incoming())
+        && incoming().keys().size() <= 8;
+      allow delete: if isValidId(customerId);
+    }
+
+    match /config/{configId} {
+      allow read: if true;
+      allow create: if isValidId(configId) && isValidConfig(incoming())
+        && incoming().keys().hasAll(['capacity', 'callingStopped', 'lastResetDate', 'nextSeq'])
+        && incoming().keys().size() <= 4;
+      allow update: if isValidId(configId) && isValidConfig(incoming())
+        && incoming().keys().size() <= 4;
+      allow delete: if isValidId(configId);
+    }
+
+  }
+}

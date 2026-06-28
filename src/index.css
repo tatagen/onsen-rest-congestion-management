@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* 道後温泉 空き部屋管理システム（参考UI）に合わせた和風・濃茶＋金アクセントの配色 */
+@theme {
+  --color-natural-olive: #2C1F0E;
+  --color-natural-cream: #F5EFE6;
+  --color-natural-beige: #FAF7F2;
+  --color-natural-sand: #FDF9F4;
+  --color-natural-clay: #8B6914;
+  --color-natural-khaki: #F5EDE0;
+  --color-natural-border: #E8DDD0;
+  --color-natural-wood: #2C1F0E;
+  --color-natural-moss: #2D6A31;
+}
