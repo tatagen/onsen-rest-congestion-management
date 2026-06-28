@@ -1,0 +1,6 @@
+{
+  "name": "温泉休憩室混雑状況管理",
+  "description": "温泉休憩室の座布団の配置、利用状況、待機お客様データをリアルタイムで共有・管理するシステム。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
