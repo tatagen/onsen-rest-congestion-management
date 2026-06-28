@@ -1,20 +1,48 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# ♨️ 温泉休憩室 混雑リアルタイム管理システム
 
-# Run and deploy your AI Studio app
+旅館・温泉施設の休憩室を、スタッフが直感的に管理できるリアルタイム運用ツールです。座布団マップ・待合キュー・退出時間管理をひとつのUIで完結します。
 
-This contains everything you need to run your app locally.
+🖥️ **[デモを見る](https://tatagen.github.io/onsen-rest-congestion-management/)**
 
-View your app in AI Studio: https://ai.studio/apps/54b16e84-9eed-4689-888f-6b0ee5641620
+---
 
-## Run Locally
+## ✨ 主な機能
 
-**Prerequisites:**  Node.js
+- **座布団マップ** — ドラッグ＆ドロップで座席を自由に配置。グループ連結・解除にも対応
+- **待合キュー管理** — 受付番号発券 → 呼び出し → 移動中 → 着席まで一連のフローを管理
+- **退出予定時間管理** — 着席時に退出予定時間を自動設定。残り時間・超過をリアルタイムで色分け表示
+- **空き人数の手入力表示** — 「4人×2」「2人×3」形式でヘッダーに空き状況を表示
+- **自動日次リセット** — 日付が変わると自動でデータをリセット（次の営業日の準備）
+- **部屋形状エディタ** — 多角形エディタで L 字型など自由な部屋レイアウトに対応
+- **履歴・復元機能** — 退室済み・取消済みチケットを管理画面から復元可能
 
+## 🛠️ 技術スタック
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+| 分類 | 技術 |
+|------|------|
+| フロントエンド | React 19 / TypeScript |
+| スタイリング | Tailwind CSS 4 |
+| データ | Firebase Firestore（リアルタイム同期） |
+| ビルド | Vite 6 |
+| デプロイ | GitHub Pages |
+
+## 🚀 ローカル実行
+
+```bash
+git clone https://github.com/tatagen/onsen-rest-congestion-management.git
+cd onsen-rest-congestion-management
+npm install
+npm run dev
+```
+
+> 環境変数の設定は不要です。
+
+## 📸 画面構成
+
+| 左エリア | 右エリア |
+|----------|----------|
+| 座布団マップ（ドラッグ配置・着席管理） | 待合キュー（発券・呼出・移動中リスト） |
+
+---
+
+*道後温泉の旅館での実業務から着想を得て開発しました。*
