@@ -34,5 +34,3 @@ cd onsen-rest-congestion-management
 npm install
 npm run dev
 ```
-
-*道後温泉の旅館での実業務から着想を得て開発しました。*
